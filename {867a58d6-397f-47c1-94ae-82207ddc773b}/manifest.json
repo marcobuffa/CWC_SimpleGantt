@@ -1,0 +1,97 @@
+{
+    "mver": "1.2.0",
+    "control": {
+        "identity": {
+            "name": "GraphGantt",
+            "version": "1.0",
+            "displayname": "GraphGantt",
+            "icon": "./assets/gantt.png",
+            "type": "guid://867a58d6-397f-47c1-94ae-82207ddc773b",
+            "start": "./control/index.html"
+        },
+        "environment": {
+            "extensions": {
+                "HMI": {
+                    "mandatory": true,
+                    "version": "~1.0.0"
+                }
+            }
+        },
+        "metadata": {
+            "author": "Marco Buffa",
+            "icon-author": "Jagat Icon (Flaticon) https://www.flaticon.com/free-icons/gantt"
+        },
+        "contracts": {
+            "api": {
+                "methods": {
+                    "ForceRedraw": {
+                        "parameters": {}
+                    }
+                },
+                "events": {},
+                "properties": {
+                    "Phases": {
+                        "$ref": "#/control/types/Phases"
+					},
+                    "ColorGolden": {
+                        "$ref": "#/control/types/Color",
+						"default": 4294967295
+                    },
+                    "ColorLast": {
+                        "$ref": "#/control/types/Color",
+						"default": 4294967295
+                    },
+                    "ColorActual": {
+                        "$ref": "#/control/types/Color",
+						"default": 4294967295
+                    }
+                }
+            }
+        },
+        "types": {
+			"Color": {
+				"$id": "http://tia.siemens.com/wincc-unified/types/s/color",
+				"type": "number"
+			},
+			"Phases": {
+				"type": "array",
+				"items": {
+					"$ref": "#/control/types/Phase"
+				}
+			},
+			"Phase": {
+				"type": "object",
+				"properties": {
+                    "Label": {
+                        "type": "string",
+                        "default": "Fase"
+                    },
+					"BeginGolden": {
+						"type": "number",
+						"default": 0
+					},
+					"DurationGolden": {
+						"type": "number",
+						"default": 1
+					},
+                    "BeginLast": {
+						"type": "number",
+						"default": 0
+					},
+					"DurationLast": {
+						"type": "number",
+						"default": 1
+					},
+                    "BeginActual": {
+						"type": "number",
+						"default": 0
+					},
+					"DurationActual": {
+						"type": "number",
+						"default": 1
+					}
+				}
+			}
+        }
+    }
+}

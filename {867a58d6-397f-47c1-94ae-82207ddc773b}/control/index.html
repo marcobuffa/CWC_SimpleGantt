@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>GraphXY CWC</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="libs/webcc.min.js"></script>
+        <script src="libs/chart.js"></script>
+    </head>
+    <body>
+        <div>
+            <p id="Connection">Questo CWC è in esecuzione in un <em>browser</em></p>
+        </div>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <script>
+            var wincc = false; //flag presenza runtime
+
+            function toColor(num) {
+                num >>>= 0;
+                var b = num & 0xFF,
+                g = (num & 0xFF00) >>> 8,
+                r = (num & 0xFF0000) >>> 16,
+                a = ((num & 0xFF000000) >>> 24) / 255;
+
+                return 'rgba(' + [r, g, b, a].join(',') + ')';
+            }
+
+            const mychart = new Chart(document.getElementById("myChart"), {    
+                type: 'horizontalBar',
+                data: {
+                    labels: [
+                        '', "Durata totale ciclo", '',
+                        '',
+                        '', "Chiusura dello stampo", '',
+                        '',
+                        '', "Aumento della pressione", '',
+                        '',
+                        '', "Avanzamento del ponte", '',
+                        '',
+                        '', "Apertura dell'ugello", '',
+                        '',
+                        '', "Iniezione", '',
+                        '',
+                        '', "Post pressione", '',
+                        '',
+                        '', "Raffreddamento", '',
+                        '',
+                        '', "Plastificazione", '',
+                        '',
+                        '', "Arretramento del ponte", '',
+                        '',
+                        '', "Diminuzione della forza", '',
+                        '',
+                        '', "Apertura dello stampo", '',
+                        '',
+                        '', "Estrazione", '',
+                        '',
+                        '', "Pausa", ''
+                    ],
+                    datasets: [
+                        {
+                            // inizio attività
+                            data: [
+                                0, 0, 0,
+                                0,
+                                1, 1, 1,
+                                0,
+                                2, 2, 2,
+                                0,
+                                3, 3, 3,
+                                0,
+                                4, 4, 4,
+                                0,
+                                5, 5, 5,
+                                0,
+                                6, 6, 6,
+                                0,
+                                7, 7, 7,
+                                0,
+                                8, 8, 8,
+                                0,
+                                9, 9, 9,
+                                0,
+                                10, 10, 10,
+                                0,
+                                11, 11, 11,
+                                0,
+                                12, 12, 12,
+                                0,
+                                13, 13, 13
+                            ],
+                            backgroundColor: "rgba(0, 0, 0, 0)",
+                            hoverBackgroundColor: "rgba(0, 0, 0, 0)",
+                        },
+                        {
+                            // durata attività
+                            data: [
+                                13, 13, 13,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1,
+                                0,
+                                1, 1, 1
+                            ],
+                            backgroundColor: [
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red',
+                                    'rgba(0, 0, 0, 0)',
+                                'blue', 'black', 'red'
+                            ],
+                        }
+                    ]
+                },
+                options: {
+                    animation: false,
+                    scales: {
+                        xAxes: [{
+                            label:"Duration",
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                            scaleLabel:{
+                                display: false
+                            },
+                            gridLines: {
+                            }, 
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false,
+                                color: "#fff",
+                                zeroLineColor: "#fff",
+                                zeroLineWidth: 0
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                            stacked: true
+                        }]
+                    },
+                    legend:{
+                        display: false
+                    },
+                },
+            });
+
+            function updateChart() {
+                mychart.update();
+            }
+
+            //Callback nuovi parametri da WinCC
+            function dataFromWinCC(){
+                for (let i = 0; i < WebCC.Properties.Phases.length; i++){
+                    mychart.data.labels[i*3+1] = WebCC.Properties.Phases[i].Label;
+                    mychart.data.datasets[0].data[i*3] = WebCC.Properties.Phases[i].BeginGolden;
+                    mychart.data.datasets[0].data[i*3+1] = WebCC.Properties.Phases[i].BeginLast;
+                    mychart.data.datasets[0].data[i*3+2] = WebCC.Properties.Phases[i].BeginActual;
+                    mychart.data.datasets[1].data[i*3] = WebCC.Properties.Phases[i].DurationGolden;
+                    mychart.data.datasets[1].data[i*3+1] = WebCC.Properties.Phases[i].DurationLast;
+                    mychart.data.datasets[1].data[i*3+2] = WebCC.Properties.Phases[i].DurationActual;
+                    mychart.data.datasets[1].backgroundColor[i*3] = toColor(WebCC.Properties.ColorGolden);
+                    mychart.data.datasets[1].backgroundColor[i*3+1] = toColor(WebCC.Properties.ColorLast);
+                    mychart.data.datasets[1].backgroundColor[i*3+2] = toColor(WebCC.Properties.ColorActual);
+                }
+                updateChart();
+                console.log("Nuovi parametri ricevuti da WinCC");
+			}
+
+            //connessione con WinCC
+            WebCC.start(
+                function(result) {
+                    if (result) { //c'è un'istanza di WinCC in esecuzione
+                        console.log("Connessione con WinCC avvenuta con successo");
+                        if (WebCC.isDesignMode) { //l'istanza è di ingegneria (TIA Portal)
+							document.getElementById('Connection').innerHTML = "Questo CWC è in esecuzione in <em>ingegneria (TIA Portal)</em>";
+						} else { //l'istanza è di runtime
+                            document.getElementById('Connection').innerHTML = "Questo CWC è in esecuzione nel <em>runtime</em>";
+							try {
+                                wincc = true; //attiva flag presenza runtime
+                                WebCC.onPropertyChanged.subscribe(dataFromWinCC); //registrazione callback chiamata quando arrivano nuovi dati da WinCC
+                            } 
+                            catch (error) {
+                                console.log(error);
+                            }
+						}  
+                    } else {
+                        console.log("Connessione con WinCC non riuscita (sono in un browser?)");
+                        updateChart();
+                    }
+                },
+                {
+                    //dichiarazione di metodi, eventi e parametri (deve coincidere con il manifest!)
+                    methods: {
+                        ForceRedraw: function(){
+                            mychart.update();
+                        },
+                    },
+                    events: [],
+                    properties: {
+                        Phases: [
+                            {Label: "Durata totale ciclo", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Chiusura dello stampo", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Aumento della pressione", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Avanzamento del ponte", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Apertura dell'ugello", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Iniezione", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Post pressione", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Raffreddamento", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Plastificazione", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Arretramento del ponte", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Diminuzione della forza", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Apertura dello stampo", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Estrazione", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                            {Label: "Pausa", BeginGolden: 0, BeginLast: 0, BeginActual: 0, DurationGolden: 1, DurationLast: 1, DurationActual: 1},
+                        ],
+                        ColorGolden: 4294967295,
+                        ColorLast: 4294967295,
+                        ColorActual: 4294967295
+                    }
+                },
+                ["HMI"],
+                10000
+            );
+        </script>
+    </body>
+</html>
