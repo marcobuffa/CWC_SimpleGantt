@@ -35,15 +35,15 @@
 					},
                     "ColorGolden": {
                         "$ref": "#/control/types/Color",
-						"default": 4294967295
+						"default": 4278190080
                     },
                     "ColorLast": {
                         "$ref": "#/control/types/Color",
-						"default": 4294967295
+						"default": 4278190335
                     },
                     "ColorActual": {
                         "$ref": "#/control/types/Color",
-						"default": 4294967295
+						"default": 4294901760
                     }
                 }
             }
