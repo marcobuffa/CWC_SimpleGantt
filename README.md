@@ -2,7 +2,7 @@
 
 ## A very simple Custom Web Control (CWC) to create a Gantt chart with chart.js in WinCC Unified
 
-![Gantt Chart]({867a58d6-397f-47c1-94ae-82207ddc773b}/assets/learning.png)
+![Gantt Chart]({867a58d6-397f-47c1-94ae-82207ddc773b}/assets/gantt.png)
 
 Icon created by [Jagat Icon - Flaticon](https://www.flaticon.com/free-icons/gantt")
 
