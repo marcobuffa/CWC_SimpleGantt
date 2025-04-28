@@ -58,5 +58,11 @@ This CWC exposes a method too:
 #### ForceRedraw
 This just calls an update method on the chartJS object, with current configuration and dataset.
 
+## Disclaimer
+
+The code provided in this repository is intended as an example only. We do not guarantee that the code is error-free or suitable for any specific purpose. Use of the code is at the user's discretion. We do not assume any responsibility for any issues arising from the use of the code. 
+
+The copyright of any libraries included in the code belongs to their respective developers.
+
 ## May I ask for support on this CWC?
 Sure: just drop me an [email](mailto:marco.buffa@siemens.com).
